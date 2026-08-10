@@ -1,0 +1,16 @@
+# Copyright 2020 Pants project contributors.
+# Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+ansicolors==1.1.8
+ setuptools>=56.2.0,<57
+  types-setuptools>=56.2.0,<58
+ awscli==1.16.213
+  django==5.2.3
+  pip==22.0.4
+  httplib2==0.18.1
+  python-multipart==0.0.15
+
+
+
+
+
