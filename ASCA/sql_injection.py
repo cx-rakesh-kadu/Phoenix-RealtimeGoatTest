@@ -136,13 +136,21 @@ def search_users_secure():
     # Get search query from request parameter
     search_term = request.args.get('q', '')
 
-    # SECURE: Using parameterized query with placeholders
+    # SERVER-SIDE VALIDATION: Reject input that is not a plain string or exceeds
+    # a reasonable length. This breaks the taint flow before the DB parameter is
+    # constructed (CWE-472 Parameter Tampering fix).
+    if not isinstance(search_term, str) or len(search_term) > 200:
+        return Response("Invalid search term", status=400)
+
+    # SECURE: Using parameterized query with placeholders.
+    # The LIKE wildcards are literal SQL characters added here; the user-supplied
+    # search_term is passed as a bound parameter, never interpolated into the SQL.
     query = "SELECT id, username, email FROM users WHERE username LIKE ?"
 
     try:
         # Execute the secure query with parameters
         cursor = db_connection.cursor()
-        cursor.execute(query, (f"%{search_term}%",))
+        cursor.execute(query, ("%" + search_term + "%",))
         rows = cursor.fetchall()
 
         # Process results
