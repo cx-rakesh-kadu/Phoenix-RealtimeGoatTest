@@ -21,7 +21,8 @@
   },
   "overrides": {
     "tar-fs": "^2.1.2",
-    "flatted": "^3.4.2"
+    "flatted": "^3.4.2",
+    "js-yaml": "^3.15.0"
   },
   "husky": {
     "hooks": {
