@@ -15,15 +15,15 @@ def get_user_by_id():
     # Get user ID from request parameter
     user_id = request.args.get('id', '')
 
-    # VULNERABLE: Direct concatenation of user input into SQL query
-    query = f"SELECT id, username, email FROM users WHERE id = {user_id}"
+    # SECURE: Using parameterized query with placeholders
+    query = "SELECT id, username, email FROM users WHERE id = ?"
 
     print(f"Executing query: {query}")
 
     try:
-        # Execute the vulnerable query
+        # Execute the query with parameters
         cursor = db_connection.cursor()
-        cursor.execute(query)
+        cursor.execute(query, (user_id,))
         rows = cursor.fetchall()
 
         # Process results
